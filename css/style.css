@@ -1,0 +1,125 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Definição das variáveis globais de cores e tema claro */
+:root {
+  --paper: #ffffff;
+  --ink: #181a2a;
+  --slate: #687280;
+  --mist: #f3f4f6;
+  --line: #e5e7eb;
+  --accent: #6d28d9;
+  --price: #059669;
+  --star: #f59e0b;
+
+  --console: #6d28d9;
+  --acessorios: #0ea5e9;
+  --computadores: #059669;
+  --jogos: #db2777;
+
+  color-scheme: light;
+}
+
+/* Sobrescreve as variáveis globais para aplicar o modo escuro */
+[data-theme="dark"] {
+  --paper: #121212;
+  --ink: #f4f4f5;
+  --slate: #a1a1aa;
+  --mist: #27272a;
+  --line: #3f3f46;
+  color-scheme: dark;
+}
+
+
+header{
+    display: flex;
+    justify-content: space-between;
+    height: 3em;
+}
+
+nav{
+    ul{
+        display: flex;
+        list-style: none;
+    }
+
+    ul li a{
+        text-decoration: none;
+    }
+}
+
+.titulo{
+    text-align: center;
+}
+
+.banner{
+    justify-content: center;
+    display: flex;
+    gap: 10px;
+}
+
+img {
+    max-width: 100%;
+    height: 12cqw;
+}
+
+#lista-destaques {
+    display: grid;
+    grid-template-columns: repeat(4, 200px);
+    grid-template-rows: repeat(4, 100px);
+    gap: 10px;
+    justify-content: center;
+}
+
+.cardDestaque{
+    display: flex;
+    flex-direction: column;
+
+}
+
+.imgDestaque{
+
+}
+
+.categoriaCardDestaque{
+
+}
+
+.tituloCardDestaque{
+
+}
+
+.precoCardDestaque{
+
+}
+
+.btnVerDetalhes{
+
+}
+
+/*Catálogo*/
+#vitrine {
+    display: grid;
+    grid-template-columns: repeat(4, 300px);
+    grid-template-rows: repeat(4, 180px);
+    gap: 150px 10px;
+    justify-content: center;
+    
+}
+
+
+/*Footer*/
+
+.divConteudoFooter{
+    display: flex;
+    gap: 50px;
+    padding-bottom: 20px;
+}
+
+.colunaFooter{
+    display: flex;
+    gap: 15px;
+}
