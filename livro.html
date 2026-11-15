@@ -43,9 +43,46 @@
         <!-- logo, nome, nav, ícone do carrinho -->
     </header>
     <main>
-        <h1 class="titulo">Livro</h1> 
+        <article class="detalhe-livro" id="livro-dados" hidden>
+            <img class="detalhe-capa" id="livro-capa" alt="">
 
-       
+            <div class="detalhe-info">
+                <p class="categoriaCardDestaque" id="livro-categoria"></p>
+                <h1 id="livro-titulo"></h1>
+                <p class="detalhe-autor">por <span id="livro-autor"></span></p>
+
+                <p class="detalhe-preco" id="livro-preco"></p>
+
+                <button type="button" class="botao" id="btn-adicionar">Adicionar ao carrinho</button>
+                <p class="mensagem-form sucesso" id="livro-feedback" role="status"></p>
+
+                <a class="link-voltar" href="catalogo.html">Voltar ao catálogo</a>
+            </div>
+
+            <section class="detalhe-secao" aria-labelledby="sinopse-titulo">
+                <h2 id="sinopse-titulo">Sinopse</h2>
+                <p class="detalhe-sinopse" id="livro-sinopse"></p>
+            </section>
+
+            <section class="detalhe-secao" aria-labelledby="ficha-titulo">
+                <h2 id="ficha-titulo">Ficha técnica</h2>
+                <dl class="detalhe-meta">
+                    <dt>Editora</dt>
+                    <dd id="livro-editora"></dd>
+                    <dt>Ano</dt>
+                    <dd id="livro-ano"></dd>
+                    <dt>Páginas</dt>
+                    <dd id="livro-paginas"></dd>
+                </dl>
+            </section>
+        </article>
+
+        <section id="livro-erro" hidden>
+            <h1 class="titulo">Livro não encontrado</h1>
+            <p class="carrinho-vazio">
+                Não encontramos esse livro. <a href="catalogo.html">Voltar ao catálogo</a>
+            </p>
+        </section>
     </main>
     <footer>
         <!-- endereço, redes sociais, direitos autorais -->

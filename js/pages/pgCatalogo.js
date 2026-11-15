@@ -73,19 +73,20 @@ function renderizarVitrine() {
         verDetalhes.href = `livro.html?id=${livro.id}`
         verDetalhes.textContent = "Ver Detalhes";
 
-        const btnCarrinho = document.createElement("i");
+        const btnCarrinho = document.createElement("button");
         btnCarrinho.classList.add("fas", "fa-shopping-cart", "me-2");
 
         btnCarrinho.addEventListener("click", function () {
-            /*const registroProduto = bd.buscarProduto(id);
+            //const item = bd.buscarItens(livro.id);
     
-            if (registroProduto) {
-                bd.abrirCarrinho(registroProduto.produto);
-                alert(`${registroProduto.produto.nome} foi adicionado ao carrinho!`);
+            /*if (item) {
+                bd.abrirCarrinho(item);
+                alert("deu bom");
             } else {
                 console.log("Erro ao adicionar produto");
             }*/
 
+            bd.abrirCarrinho(livro);
         });
 
         spanBotoes.append(verDetalhes, btnCarrinho);

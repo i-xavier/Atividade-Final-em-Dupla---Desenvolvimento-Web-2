@@ -1,4 +1,3 @@
-// Importa a classe do modelo individual de item
 import ItemCarrinho from "./itemCarrinho.js";
 
 class Carrinho{
@@ -12,7 +11,7 @@ class Carrinho{
     adicionarItem(item){
         const foundItem = this.itens.find(i => i.produto.id === item.id);
         if(foundItem){
-            itemExistente.aumentarQuantidade();
+            foundItem.aumentarQuantidade();
         } else{
             const livro = new ItemCarrinho(item, 1);
             this.itens.push(livro);
@@ -20,16 +19,20 @@ class Carrinho{
     }
 
     calcularSubtotal(){
-
-
+        let total = 0;
+        this.itens.forEach( item => { 
+            total += parseInt(item.quantidade) * parseFloat(item.produto.preco);
+        })
+        this.subtotal = total.toFixed(2);
+        return this.subtotal;
     }
 
-    /*calcularTaxaEntrega(){
+    /*calcularDesconto(){
 
     }*/
 
     calcularTotal(){
-
+        return this.subtotal;
     }
 
     getItensCarrinho(){
@@ -39,6 +42,14 @@ class Carrinho{
     /*getQuantidadeTotalItens(){
 
     }*/
+
+    getItensTotalItens(){
+        let total  = 0;
+        this.itens.forEach(i => {
+            total += parseInt(i.quantidade);
+        })
+        return total;
+    }
 }
 
 export default Carrinho;

@@ -1,12 +1,18 @@
 // Importa as classes de modelo de dados do carrinho
 import ItemCarrinho from "../models/itemCarrinho.js";
 import Carrinho from "../models/carrinho.js";
+import { livrosDefault } from "../data/livros.js";
 
 
-class Repositorio{
+class Repositorio {
     constructor() {
         // Inicializa o catálogo de produtos buscando do localStorage
-        this.produtos = JSON.parse(localStorage.getItem("produtos")) || [];
+
+        const dadosLivros = livrosDefault
+        
+        this.livros = JSON.parse(localStorage.getItem("livros")) || localStorage.setItem("livros", JSON.stringify(livrosDefault));
+
+        this.itens = JSON.parse(localStorage.getItem("itens")) || [];
 
         // Reconstrói a instância do carrinho a partir dos dados gravados
         const carrinhoSalvo = JSON.parse(localStorage.getItem("carrinho"));
@@ -20,43 +26,54 @@ class Repositorio{
         }
     }
 
-    getProdutos(){
+    getItens() {
+        return this.itens;
+    }
+
+    buscarItem(id) {
+        return this.itens.find(p => p.id === parseInt(id)) || null;
+    }
+
+    buscarLivro(id) {
+        return this.livros.find(p => p.id === parseInt(id)) || null;
+    }
+
+
+    getCarrinho() {
+        return this.carrinho;
+    }
+
+    abrirCarrinho(livro) {
+        this.carrinho.adicionarItem(livro);
+        this.salvarCarrinho();
+    }
+
+    getItensCarrinho() {
+        return this.carrinho.getItensCarrinho();
+    }
+
+    getSubtotal() {
+        return this.carrinho.calcularSubtotal();
+    }
+
+    apagarItemCarrinho(indice) {
+        if (indice >= 0 && indice < this.carrinho.itens.length) {
+            this.carrinho.itens.splice(indice, 1);
+            this.salvarCarrinho();
+            return true;
+        }
+        return false;
+    }
+
+    limparCarrinhoAberto() {
 
     }
 
-    buscarProduto(id){
-
-    }
-
-    getCarrinho(){
-
-    }
-
-    abrirCarrinho(){
-
-    }
-
-    getItensCarrinho(){
-
-    }
-
-    getSubtotal(){
-
-    }
-
-    apagarItemCarrinho(indice){
-
-    }
-
-    limparCarrinhoAberto(){
-
-    }
-
-    salvarCarrinho(){
+    salvarCarrinho() {
         localStorage.setItem("carrinho", JSON.stringify(this.carrinho));
     }
 
-    getQuantidadeTotalItens(){
+    getQuantidadeTotalItens() {
 
     }
 }
