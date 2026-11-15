@@ -1,10 +1,12 @@
-import Repositorio from "../repository/repositorio.js";
+import bd from "../repository/repositorio.js";
 import { livrosDefault } from "../data/livros.js";
+import { atualizarContador } from "../componentes/header.js";
 
-const bd = new Repositorio();
+
 const vitrine = document.getElementById("vitrine");
 const busca = document.getElementById("search-bar");
 const btnFiltrosVitrine = document.querySelectorAll(".btn-filtro");
+const ordenarCatalogo = document.getElementById("ordenar-livros");
 
 
 const livros = livrosDefault;
@@ -13,10 +15,11 @@ let textoSearchBar = "";
 
 document.addEventListener("DOMContentLoaded", (e) => {
     renderizarVitrine();
+    atualizarContador();
 })
 
 busca.addEventListener("input", (e) => {
-    textoSearchBar = capitalizarPalavras(busca.value);
+    textoSearchBar = busca.value;
     renderizarVitrine();
 })
 
@@ -29,6 +32,24 @@ btnFiltrosVitrine.forEach(botao => {
         renderizarVitrine();
     });
 });
+
+ordenarCatalogo.addEventListener("change", () =>{
+
+    if(ordenarCatalogo.value == 1) {
+        livros.sort((a, b) => a.titulo.localeCompare(b.titulo));
+
+    } else if(ordenarCatalogo.value == 2){
+        livros.sort((a, b) => b.titulo.localeCompare(a.titulo));
+
+    } else if(ordenarCatalogo.value == 3){
+        livros.sort((a, b) => a.preco - b.preco);
+
+    } else if(ordenarCatalogo.value == 4){
+        livros.sort((a, b) => b.preco - a.preco);
+    }
+
+    renderizarVitrine();
+})
 
 function renderizarVitrine() {
 
@@ -87,6 +108,7 @@ function renderizarVitrine() {
             }*/
 
             bd.abrirCarrinho(livro);
+            atualizarContador();
         });
 
         spanBotoes.append(verDetalhes, btnCarrinho);
@@ -96,24 +118,21 @@ function renderizarVitrine() {
 }
 
 function filtrarCatalogo(busca, categoria) {
-
+    const termo = normalizar(busca.trim());
     let listaFiltrada;
 
-    /*O filtro de busca não tá funcionando 100%, talvez por conta da função de capitalização, olhar depois!  */
-    if (busca && categoria !== "Todos") {
-
-        listaFiltrada = livros.filter(livro => (livro.titulo.includes(busca) || livro.autor.includes(busca)) && livro.categoria === categoria);
-
-    } else if (busca) {
-
-        listaFiltrada = livros.filter(livro => livro.titulo.includes(busca) || livro.autor.includes(busca));
-
+    if (termo && categoria !== "Todos") {
+        listaFiltrada = livros.filter(livro =>
+            (normalizar(livro.titulo).includes(termo) || normalizar(livro.autor).includes(termo)) &&
+            livro.categoria === categoria
+        );
+    } else if (termo) {
+        listaFiltrada = livros.filter(livro =>
+            normalizar(livro.titulo).includes(termo) || normalizar(livro.autor).includes(termo)
+        );
     } else if (categoria !== "Todos") {
-
         listaFiltrada = livros.filter(livro => livro.categoria === categoria);
-
     } else {
-
         listaFiltrada = livros;
     }
 
@@ -124,6 +143,6 @@ function limparListaProdutos() {
     vitrine.innerHTML = "";
 }
 
-function capitalizarPalavras(texto) {
-    return texto.replace(/\b\w/g, letra => letra.toUpperCase());
+function normalizar(texto) {
+    return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }

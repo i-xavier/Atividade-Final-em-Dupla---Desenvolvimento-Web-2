@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livros</title>
+    <title>Contato</title>
 
+    <script type="module" src="js/componentes/header.js" defer></script>
     <script type="module" src="js/pages/pgContato.js" defer></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -13,7 +14,7 @@
 <body>
     <header>
 
-        <img src="" alt="Logotipo">
+        <img src="/img/logo.svg" alt="Logotipo">
 
         <nav>
             <ul>
@@ -36,8 +37,8 @@
         </nav>
 
         <div id="header-actions">
-            <i>Carrinho</i>
-            <i>Claro</i>
+            <a href="carrinho.html">Carrinho (<span id="qtd-carrinho"></span>)</a>
+            <button id="theme-toggle">Claro</button>
         </div>
 
         <!-- logo, nome, nav, ícone do carrinho -->
@@ -45,19 +46,49 @@
     <main>
         <h1 class="titulo">Contato</h1> 
 
-        <p id="texto-livraria"></p>
-        
-        <form action="" id="contato-form">
-            <label for="">Nome</label>
-            <input type="text" id="contato-nome">
-            <label for="">E-mail</label>
-            <input type="text" placeholder="nome@email.com" id="contato-email">
-            <label for="">Assunto</label>
-            <input type="text" id="contato-assunto">
-            <label for="">Mensagem</label>
-            <textarea name="" id="contato-mensagem"></textarea>
-            <input type="submit" value="Enviar">
-        </form>
+        <section class="contato-texto" aria-labelledby="sobre-titulo">
+            <h2 id="sobre-titulo">Sobre a livraria</h2>
+            <p>A Livraria Novo Mundo reúne fantasia, ficção científica, filosofia, política e psicologia em um só
+                lugar. Nasceu no bairro da Liberdade, em São Paulo, para quem gosta de descobrir novos mundos
+                entre as páginas de um livro. Escreva para nós com dúvidas, sugestões de títulos ou pedidos
+                especiais.</p>
+        </section>
+
+        <section aria-labelledby="formulario-titulo">
+            <h2 id="formulario-titulo" class="titulo">Fale com a gente</h2>
+
+            <form id="contato-form" class="form-contato" novalidate>
+                <div class="campo">
+                    <label for="contato-nome">Nome</label>
+                    <input type="text" id="contato-nome" name="nome" autocomplete="name" required
+                        aria-describedby="erro-nome">
+                    <p class="campo-erro" id="erro-nome"></p>
+                </div>
+
+                <div class="campo">
+                    <label for="contato-email">E-mail</label>
+                    <input type="email" id="contato-email" name="email" placeholder="nome@email.com"
+                        autocomplete="email" required aria-describedby="erro-email">
+                    <p class="campo-erro" id="erro-email"></p>
+                </div>
+
+                <div class="campo">
+                    <label for="contato-assunto">Assunto</label>
+                    <input type="text" id="contato-assunto" name="assunto" required aria-describedby="erro-assunto">
+                    <p class="campo-erro" id="erro-assunto"></p>
+                </div>
+
+                <div class="campo">
+                    <label for="contato-mensagem">Mensagem</label>
+                    <textarea id="contato-mensagem" name="mensagem" required
+                        aria-describedby="erro-mensagem"></textarea>
+                    <p class="campo-erro" id="erro-mensagem"></p>
+                </div>
+
+                <button type="submit" class="botao">Enviar mensagem</button>
+                <p id="contato-feedback" class="mensagem-form" role="status"></p>
+            </form>
+        </section>
 
         
     </main>
@@ -102,7 +133,7 @@
 
 
 
-        <p>&copy;© 2026 Livraria Novo Mundo
+        <p>&copy; 2026 Livraria Novo Mundo
             Todos os direitos reservados.
 
             Este é um projeto fictício desenvolvido para fins acadêmicos.</p>

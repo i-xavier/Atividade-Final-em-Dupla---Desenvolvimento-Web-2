@@ -1,11 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livros</title>
+    <title>Livraria NovoMundo</title>
 
+    <script type="module" src="js/componentes/header.js" defer></script>
     <script type="module" src="js/pages/pgIndex.js" defer></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -13,7 +14,7 @@
 <body>
     <header>
 
-        <img src="" alt="Logotipo">
+        <img src="/img/logo.svg" alt="Logotipo">
 
         <nav>
             <ul>
@@ -36,8 +37,8 @@
         </nav>
 
         <div id="header-actions">
-            <i>Carrinho</i>
-            <i>Claro</i>
+            <a href="carrinho.html">Carrinho (<span id="qtd-carrinho"></span>)</a>
+            <button id="theme-toggle">Claro</button>
         </div>
 
         <!-- logo, nome, nav, ícone do carrinho -->
@@ -48,9 +49,9 @@
         <section aria-labelledby="banner-titulo">
             <div class="banner">
                 <div id="banner-content">
-                    <h1 id="banner-titulo">Livro do mês: Título do Livro</h1>
+                    <h2 id="banner-titulo">Livro do mês: <span></span></h2>
                     <p>Chamada curta sobre o livro ou a promoção.</p>
-                    <a href="livro.html?id=3" class="botao">Ver detalhes</a>
+                    <a href="livro.html?id=4" class="botao">Ver detalhes</a>
                 </div>
 
                 <img src="img/duna.jpg" alt="">
@@ -106,7 +107,7 @@
 
 
 
-        <p>&copy;© 2026 Livraria Novo Mundo
+        <p>&copy; 2026 Livraria Novo Mundo
             Todos os direitos reservados.
 
             Este é um projeto fictício desenvolvido para fins acadêmicos.</p>

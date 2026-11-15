@@ -7,12 +7,9 @@ import { livrosDefault } from "../data/livros.js";
 class Repositorio {
     constructor() {
         // Inicializa o catálogo de produtos buscando do localStorage
+        this.livros = livrosDefault;
 
-        const dadosLivros = livrosDefault
-        
-        this.livros = JSON.parse(localStorage.getItem("livros")) || localStorage.setItem("livros", JSON.stringify(livrosDefault));
-
-        this.itens = JSON.parse(localStorage.getItem("itens")) || [];
+        /*this.itens = JSON.parse(localStorage.getItem("itens")) || [];*/
 
         // Reconstrói a instância do carrinho a partir dos dados gravados
         const carrinhoSalvo = JSON.parse(localStorage.getItem("carrinho"));
@@ -26,13 +23,14 @@ class Repositorio {
         }
     }
 
-    getItens() {
+    /*getItens() {
         return this.itens;
-    }
+    }*/
 
+    /*
     buscarItem(id) {
         return this.itens.find(p => p.id === parseInt(id)) || null;
-    }
+    }*/
 
     buscarLivro(id) {
         return this.livros.find(p => p.id === parseInt(id)) || null;
@@ -66,7 +64,8 @@ class Repositorio {
     }
 
     limparCarrinhoAberto() {
-
+        this.carrinho.itens = [];
+        this.salvarCarrinho();
     }
 
     salvarCarrinho() {
@@ -74,8 +73,13 @@ class Repositorio {
     }
 
     getQuantidadeTotalItens() {
+        return this.carrinho.getTotalItens();
+    }
 
+    cupomAceito(){
+        this.carrinho.cupom = true;
     }
 }
 
-export default Repositorio;
+const bd = new Repositorio();
+export default bd;

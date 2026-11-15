@@ -1,16 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Livros</title>
+    <title>Carrinho</title>
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-
-
 
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
@@ -22,14 +19,54 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
         defer></script>
 
+    <script type="module" src="js/componentes/header.js" defer></script>
     <script type="module" src="js/pages/pgCarrinho.js" defer></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
+    <form class="modal fade" id="formFinalizarPedido" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="modalLabel">Resumo do Pedido</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="msg" class="text-danger fw-bold mb-3"></div>
+
+                    <!-- Container preenchido dinamicamente com os itens comprados -->
+                    <div id="itensCarrinho"></div>
+
+                    <!-- Seleção do método de envio do pedido -->
+                    <label for="inEntregaPedido" class="mt-3">Opção de Envio:</label>
+                    <select id="inEntregaPedido" class="form-select">
+                        <option value="">Selecione o tipo de envio</option>
+                        <option value="delivery">Entrega expressa (Frete)</option>
+                        <option value="retirada">Retirada na loja física</option>
+                    </select>
+
+                    <!-- Campo para informar o nome do comprador -->
+                    <label for="inClienteNome" class="mt-3">Nome do Cliente:</label>
+                    <input type="text" id="inClienteNome" class="form-control" placeholder="Digite seu nome completo"
+                        required>
+
+                    <!-- Exibição do valor final calculado do pedido -->
+                    <div class="mt-4">
+                        <span>Total do Pedido:</span>
+                        <h1 id="totalPedido">R$ 0,00</h1>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <input type="submit" class="btn btn-primary" value="Finalizar Compra">
+                </div>
+            </div>
+        </div>
+    </form>
     <header>
 
-        <img src="" alt="Logotipo">
+        <img src="/img/logo.svg" alt="Logotipo">
 
         <nav>
             <ul>
@@ -52,8 +89,8 @@
         </nav>
 
         <div id="header-actions">
-            <i>Carrinho</i>
-            <i>Claro</i>
+            <a href="carrinho.html">Carrinho (<span id="qtd-carrinho"></span>)</a>
+            <button id="theme-toggle">Claro</button>
         </div>
 
         <!-- logo, nome, nav, ícone do carrinho -->
@@ -61,9 +98,18 @@
     <main>
         <h1 class="titulo">Carrinho</h1>
 
-        <div id="subtotal"></div>
+        <p>Total: <span id="subtotal"></span></p>
 
         <div id="itens-carrinho"></div>
+
+         <!-- Botões para abrir o modal de pagamento ou esvaziar a lista -->
+            <div class="d-flex gap-2 my-3">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#formFinalizarPedido"
+                    id="fechar-pedido">
+                    Continuar para o Pagamento
+                </button>
+                <button id="limpar-carrinho" class="btn btn-secondary">Limpar Carrinho</button>
+            </div>
     </main>
     <footer>
         <!-- endereço, redes sociais, direitos autorais -->
@@ -106,7 +152,7 @@
 
 
 
-        <p>&copy;© 2026 Livraria Novo Mundo
+        <p>&copy; 2026 Livraria Novo Mundo
             Todos os direitos reservados.
 
             Este é um projeto fictício desenvolvido para fins acadêmicos.</p>

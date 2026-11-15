@@ -1,9 +1,10 @@
-import Repositorio from "../repository/repositorio.js";
+import bd from "../repository/repositorio.js";
+import { atualizarContador } from "../componentes/header.js";
 
-const bd = new Repositorio();
 const id = Number(new URLSearchParams(window.location.search).get("id"));
 const item = bd.buscarLivro(id);
 const livroDados = document.getElementById("livro-dados");
+const livroErro = document.getElementById("livro-erro");
 const livroCapa = document.getElementById("livro-capa");
 const livroCat = document.getElementById("livro-categoria");
 const livroTitulo = document.getElementById("livro-titulo");
@@ -17,7 +18,8 @@ const btnAddCarrinho = document.getElementById("btn-adicionar");
 
 
 document.addEventListener("DOMContentLoaded", (e) => {
-    renderizarLivro();
+    checarLivro(item);
+    atualizarContador();
 })
 
 function renderizarLivro() {
@@ -26,7 +28,7 @@ function renderizarLivro() {
     livroCat.innerText = item.categoria;
     livroTitulo.innerText = item.titulo;
     livroAutor.innerText = item.autor;
-    livroPreco.innerText = item.preco;
+    livroPreco.innerText = `R$ ${Number(item.preco).toFixed(2).replace('.', ',')}`;
     livroSinopse.innerText = item.sinopse;
     livroEditora.innerText = item.editora;
     livroAno.innerText = item.ano;
@@ -36,4 +38,14 @@ function renderizarLivro() {
 
 btnAddCarrinho.addEventListener("click", (e) =>{
     bd.abrirCarrinho(item);
+    atualizarContador();
 })
+
+function checarLivro(item){
+    if(item === null){
+        livroErro.hidden = false;
+        return;
+    }
+
+    renderizarLivro();
+}

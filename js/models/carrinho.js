@@ -1,26 +1,26 @@
 import ItemCarrinho from "./itemCarrinho.js";
 
-class Carrinho{
+class Carrinho {
 
-    constructor(itens = [], status = true){
+    constructor(itens = [], status = true) {
         this.itens = itens;
         this.status = status;
         this.subtotal = "0.00";
     }
 
-    adicionarItem(item){
+    adicionarItem(item) {
         const foundItem = this.itens.find(i => i.produto.id === item.id);
-        if(foundItem){
+        if (foundItem) {
             foundItem.aumentarQuantidade();
-        } else{
+        } else {
             const livro = new ItemCarrinho(item, 1);
             this.itens.push(livro);
         }
     }
 
-    calcularSubtotal(){
+    calcularSubtotal() {
         let total = 0;
-        this.itens.forEach( item => { 
+        this.itens.forEach(item => {
             total += parseInt(item.quantidade) * parseFloat(item.produto.preco);
         })
         this.subtotal = total.toFixed(2);
@@ -31,20 +31,16 @@ class Carrinho{
 
     }*/
 
-    calcularTotal(){
+    calcularTotal() {
         return this.subtotal;
     }
 
-    getItensCarrinho(){
+    getItensCarrinho() {
         return this.itens;
     }
-
-    /*getQuantidadeTotalItens(){
-
-    }*/
-
-    getItensTotalItens(){
-        let total  = 0;
+    
+    getTotalItens() {
+        let total = 0;
         this.itens.forEach(i => {
             total += parseInt(i.quantidade);
         })

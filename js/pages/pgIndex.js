@@ -1,4 +1,5 @@
 import { livrosDefault } from "../data/livros.js";
+import { atualizarContador } from "../componentes/header.js";
 
 const vitrine = document.getElementById("lista-destaques");
 
@@ -9,6 +10,7 @@ const livrosDestaque = livros.filter( livro => livro.destaque === true);
 
 document.addEventListener("DOMContentLoaded", (e) =>{
     renderizarVitrine();
+    atualizarContador();
 })
 
 function renderizarVitrine(){
