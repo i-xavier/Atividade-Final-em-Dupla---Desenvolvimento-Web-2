@@ -1,3 +1,13 @@
+// LIVROS.JS
+// Dados do catálogo: lista com os 12 livros (3 em cada categoria).
+// Nenhum card é escrito no HTML: as páginas leem este array e criam os cards por JavaScript.
+//
+// Campos de cada livro:
+//   id         -> número único (usado na URL: livro.html?id=4)
+//   titulo, autor, editora, ano, paginas, preco, sinopse -> informações exibidas
+//   categoria  -> usada pelos botões de filtro (precisa ser igual ao data-id do botão)
+//   imagem/alt -> caminho da capa e texto alternativo (acessibilidade)
+//   destaque   -> true = aparece na vitrine da página inicial
 export const livrosDefault = [
     // Fantasia
     { id: 1, titulo: "Mistborn: O Império Final", autor: "Brandon Sanderson", editora: "Leya", ano: 2006, paginas: 560, preco: 69.90, categoria: "Fantasia", sinopse: "Em um mundo dominado há mil anos por um imperador imortal, uma jovem ladra descobre que tem o poder de queimar metais e se une a uma equipe disposta a derrubar o regime.", imagem: "img/mistborn.jpg", alt: "Capa do livro Mistborn: O Império Final", destaque: false },

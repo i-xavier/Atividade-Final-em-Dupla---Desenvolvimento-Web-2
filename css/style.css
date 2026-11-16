@@ -1,3 +1,13 @@
+/* ==========================================================
+   STYLE.CSS - Livraria Leia
+   Estilo simples e funcional, compartilhado por todas as páginas.
+   Ordem do arquivo: reset > cores > estrutura geral > cabeçalho >
+   cards > catálogo > detalhe do livro > carrinho > contato >
+   rodapé > modo escuro (bootstrap) > responsivo
+   ========================================================== */
+
+/* Reset: tira as margens padrão do navegador e faz o padding
+   ser contado dentro da largura dos elementos */
 * {
     margin: 0;
     padding: 0;
@@ -8,12 +18,14 @@
 :root {
   --paper: #ffffff;
   --ink: #181a2a;
-  --slate: #687280;
+  --slate: #4b5563;
   --mist: #f3f4f6;
   --line: #e5e7eb;
   --accent: #6d28d9;
-  --price: #059669;
+  --price: #047857;
   --star: #f59e0b;
+  --erro: #b91c1c;
+  --sucesso: #047857;
 
   --console: #6d28d9;
   --acessorios: #0ea5e9;
@@ -30,97 +42,722 @@
   --slate: #a1a1aa;
   --mist: #27272a;
   --line: #3f3f46;
+  --accent: #a78bfa;
+  --price: #34d399;
+  --erro: #f87171;
+  --sucesso: #34d399;
   color-scheme: dark;
 }
 
+/* Quando o texto do botão roxo é branco, no escuro o roxo é claro:
+   por isso o texto dos botões usa uma variável própria */
+:root { --texto-botao: #ffffff; }
+[data-theme="dark"] { --texto-botao: #121212; }
 
-header{
+
+/* ---------- Estrutura geral ---------- */
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: var(--paper);
+    color: var(--ink);
+    line-height: 1.5;
+}
+
+/* Garante que o atributo "hidden" funcione mesmo quando a classe
+   define display (ex.: .detalhe-livro usa grid) */
+[hidden] {
+    display: none !important;
+}
+
+/* Conteúdo centralizado e com largura máxima */
+main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px;
+}
+
+.titulo {
+    text-align: center;
+    margin: 16px 0;
+}
+
+h2, h3 {
+    margin-bottom: 8px;
+}
+
+a {
+    color: var(--accent);
+}
+
+/* Aparece só para leitor de tela (labels escondidos da busca) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+}
+
+/* Contorno visível ao navegar pelo teclado */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+img {
+    max-width: 100%;
+}
+
+
+/* ---------- Cabeçalho e menu ---------- */
+
+/* "body > header" evita pegar o <header> de dentro do catálogo */
+body > header {
     display: flex;
     justify-content: space-between;
-    height: 3em;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--line);
+    background: var(--mist);
+}
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    font-size: 1.2em;
+    text-decoration: none;
+    color: var(--ink);
+}
+
+.marca img {
+    height: 40px;
+    width: auto;
 }
 
 nav{
     ul{
         display: flex;
+        gap: 20px;
         list-style: none;
     }
 
     ul li a{
         text-decoration: none;
+        color: var(--ink);
+        padding: 4px 0;
+        border-bottom: 2px solid transparent;
+        transition: color 0.2s, border-color 0.2s;
+    }
+
+    ul li a:hover{
+        color: var(--accent);
+        border-bottom-color: var(--accent);
     }
 }
 
-.titulo{
-    text-align: center;
+#header-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
+
+#header-actions a {
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#theme-toggle {
+    padding: 6px 10px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+#theme-toggle:hover {
+    background: var(--line);
+}
+
+
+/* ---------- Botão principal ---------- */
+
+.botao {
+    display: inline-block;
+    padding: 10px 16px;
+    background: var(--accent);
+    color: var(--texto-botao);
+    border: none;
+    border-radius: 4px;
+    font-size: 1em;
+    text-decoration: none;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.botao:hover {
+    opacity: 0.85;
+    transform: translateY(-2px);
+}
+
+
+/* ---------- Home: banner ---------- */
 
 .banner{
     justify-content: center;
+    align-items: center;
     display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: var(--mist);
+    border-radius: 8px;
+}
+
+#banner-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
     gap: 10px;
 }
 
-img {
-    max-width: 100%;
-    height: 12cqw;
+.banner img {
+    height: 240px;
+    width: auto;
 }
 
-#lista-destaques {
+
+/* ---------- Cards de livros (home e catálogo) ---------- */
+
+/* Grade: 2 colunas no celular, 3 no tablet, 4 no desktop (ver @media no fim) */
+#lista-destaques,
+#vitrine {
     display: grid;
-    grid-template-columns: repeat(4, 200px);
-    grid-template-rows: repeat(4, 100px);
-    gap: 10px;
-    justify-content: center;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 16px;
 }
 
 .cardDestaque{
     display: flex;
     flex-direction: column;
+    gap: 6px;
+    padding: 12px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--paper);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: aparecer 0.4s ease;
+}
 
+.cardDestaque:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Os cards surgem com um leve fade ao serem desenhados */
+@keyframes aparecer {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 .imgDestaque{
-
+    width: 100%;
+    height: 200px;
+    object-fit: contain;
+    background: var(--mist);
 }
 
 .categoriaCardDestaque{
-
+    font-size: 0.8em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: bold;
 }
 
 .tituloCardDestaque{
+    font-weight: bold;
+}
 
+.autorCardDestaque{
+    color: var(--slate);
+    font-size: 0.9em;
 }
 
 .precoCardDestaque{
-
+    color: var(--price);
+    font-weight: bold;
+    font-size: 1.1em;
 }
 
 .btnVerDetalhes{
-
+    display: inline-block;
+    padding: 6px 10px;
+    border: 1px solid var(--accent);
+    border-radius: 4px;
+    color: var(--accent);
+    text-decoration: none;
+    text-align: center;
+    transition: background 0.2s, color 0.2s;
 }
 
-/*Catálogo*/
-#vitrine {
+.btnVerDetalhes:hover {
+    background: var(--accent);
+    color: var(--texto-botao);
+}
+
+/* Linha com "Ver Detalhes" e o botão de carrinho, sempre no fim do card */
+.botoesCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: auto;
+}
+
+.botoesCard button {
+    padding: 8px 12px;
+    background: var(--accent);
+    color: var(--texto-botao);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.botoesCard button:hover {
+    opacity: 0.8;
+}
+
+
+/* ---------- Catálogo: filtros, busca e ordenação ---------- */
+
+/* Barra de cima do catálogo (o <header> de dentro do <main>) */
+main header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.filtros-categoria {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.btn-filtro {
+    padding: 6px 12px;
+    background: var(--mist);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-filtro:hover {
+    background: var(--line);
+}
+
+/* Classe "active" é colocada pelo JS no filtro escolhido */
+.btn-filtro.active {
+    background: var(--accent);
+    color: var(--texto-botao);
+    border-color: var(--accent);
+}
+
+.search input,
+.sort select,
+.form-contato input,
+.form-contato textarea {
+    padding: 8px;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--slate);
+    border-radius: 4px;
+    font-size: 1em;
+    font-family: inherit;
+}
+
+.search input {
+    min-width: 200px;
+}
+
+
+/* ---------- Página de detalhe do livro ---------- */
+
+.detalhe-livro {
     display: grid;
-    grid-template-columns: repeat(4, 300px);
-    grid-template-rows: repeat(4, 180px);
-    gap: 150px 10px;
-    justify-content: center;
-    
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.detalhe-capa {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+    margin: 0 auto;
+}
+
+.detalhe-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.detalhe-autor {
+    color: var(--slate);
+}
+
+.detalhe-preco {
+    color: var(--price);
+    font-size: 1.8em;
+    font-weight: bold;
+}
+
+/* As seções (sinopse e ficha) ocupam a linha toda */
+.detalhe-secao {
+    grid-column: 1 / -1;
+}
+
+/* Ficha técnica: rótulo ao lado do valor */
+.detalhe-meta {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 4px 16px;
+}
+
+.detalhe-meta dt {
+    font-weight: bold;
+}
+
+
+/* ---------- Mensagens de sucesso/erro (sem alert) ---------- */
+
+.mensagem-form {
+    padding: 8px 12px;
+    border-left: 4px solid var(--slate);
+    background: var(--mist);
+    border-radius: 4px;
+}
+
+.mensagem-form.sucesso {
+    border-left-color: var(--sucesso);
+}
+
+.mensagem-form.erro {
+    border-left-color: var(--erro);
+}
+
+/* Some quando não tem texto dentro */
+.mensagem-form:empty {
+    display: none;
+}
+
+
+/* ---------- Carrinho ---------- */
+
+.carrinho-vazio {
+    text-align: center;
+    padding: 24px;
+}
+
+.item-carrinho {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.item-carrinho img {
+    width: 70px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.item-carrinho-info {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 150px;
+}
+
+.item-carrinho-titulo {
+    font-weight: bold;
+}
+
+.item-carrinho-autor,
+.item-carrinho-preco {
+    color: var(--slate);
+    font-size: 0.9em;
+}
+
+.item-carrinho-acoes {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.controle-quantidade {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.controle-quantidade button {
+    width: 30px;
+    height: 30px;
+    background: var(--mist);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.controle-quantidade button:hover:not(:disabled) {
+    background: var(--line);
+}
+
+.controle-quantidade button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.quantidade {
+    min-width: 24px;
+    text-align: center;
+}
+
+.item-carrinho-subtotal {
+    min-width: 90px;
+    font-weight: bold;
+    color: var(--price);
+}
+
+.btn-excluir {
+    background: transparent;
+    border: none;
+    color: var(--erro);
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.btn-excluir:hover {
+    transform: scale(1.2);
+}
+
+/* Resumo do pedido dentro do modal */
+.listaItensPedido {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.nomeItemPedido {
+    flex: 1;
+}
+
+.precoItemPedido {
+    font-weight: bold;
+}
+
+
+/* ---------- Contato ---------- */
+
+.contato-texto {
+    max-width: 700px;
+    margin: 0 auto 24px;
+}
+
+.form-contato {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.form-contato textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+/* Campo com erro ganha borda vermelha (o JS coloca aria-invalid) */
+.form-contato [aria-invalid="true"] {
+    border-color: var(--erro);
+    border-width: 2px;
+}
+
+.campo-erro {
+    color: var(--erro);
+    font-size: 0.9em;
+}
+
+.campo-erro:empty {
+    display: none;
+}
+
+.form-contato .botao {
+    align-self: flex-start;
 }
 
 
 /*Footer*/
 
+footer {
+    margin-top: 40px;
+    padding: 20px;
+    background: var(--mist);
+    border-top: 1px solid var(--line);
+}
+
 .divConteudoFooter{
     display: flex;
+    flex-wrap: wrap;
     gap: 50px;
     padding-bottom: 20px;
+    justify-content: center;
 }
 
 .colunaFooter{
     display: flex;
+    flex-wrap: wrap;
     gap: 15px;
 }
 
+.redes-sociais p {
+    color: var(--slate);
+}
+
+footer > p {
+    text-align: center;
+    font-size: 0.85em;
+    color: var(--slate);
+}
+
+
+/* ---------- Modo escuro nos componentes do Bootstrap (modal do carrinho) ---------- */
+
+[data-theme="dark"] .modal-content {
+    background: var(--paper);
+    color: var(--ink);
+}
+
+[data-theme="dark"] .form-control,
+[data-theme="dark"] .form-select {
+    background-color: var(--mist);
+    color: var(--ink);
+    border-color: var(--line);
+}
+
+/* Inverte a cor do "X" de fechar para aparecer no fundo escuro */
+[data-theme="dark"] .btn-close {
+    filter: invert(1);
+}
+
+
+/* ==========================================================
+   RESPONSIVIDADE
+   Base = celular. Depois sobe para tablet e desktop.
+   ========================================================== */
+
+/* Celular (até 576px): tudo empilhado e centralizado */
+@media (max-width: 576px) {
+    body > header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 14px;
+    }
+
+    .banner {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    #banner-content {
+        align-items: center;
+    }
+
+    .banner img {
+        height: 200px;
+    }
+
+    .imgDestaque {
+        height: 150px;
+    }
+
+    .item-carrinho-acoes {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .search input,
+    .sort select {
+        width: 100%;
+    }
+
+    .search,
+    .sort {
+        width: 100%;
+    }
+}
+
+/* Tablet (768px ou mais): 3 colunas e capa ao lado das informações */
+@media (min-width: 768px) {
+    #lista-destaques,
+    #vitrine {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    .detalhe-livro {
+        grid-template-columns: 300px 1fr;
+    }
+
+    .detalhe-capa {
+        margin: 0;
+    }
+}
+
+/* Desktop (1200px ou mais): 4 colunas */
+@media (min-width: 1200px) {
+    #lista-destaques,
+    #vitrine {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    main {
+        max-width: 1200px;
+    }
+}
